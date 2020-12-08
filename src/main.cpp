@@ -4,8 +4,7 @@
 #include <Adafruit_MLX90614.h>
 #include <XBee.h>
 #include <SoftwareSerial.h>
-
-
+#include "LowPower.h"
 
 ClosedCube_HDC1080 hdc1080;
 Adafruit_MLX90614 termometroIR = Adafruit_MLX90614();
@@ -31,6 +30,8 @@ double AnVol3=0;
 // funciones 
 void printSerialNumber();
 void envia(String D);
+void reinit();
+void delay_min(unsigned int min);
 
 void setup() {
   Serial.begin(9600);
@@ -46,10 +47,13 @@ void setup() {
   //printSerialNumber();
 }
 // the loop function runs over and over again forever
+
+
+
+
 void loop() {
   digitalWrite(LED_BUILTIN, HIGH);   
 
-  
   delay(100);
   Temp_amb=hdc1080.readTemperature();
   delay(100);
@@ -79,9 +83,33 @@ void loop() {
   envia(dataStringXbee);
   Serial.println("------------------------------------------------");
   digitalWrite(LED_BUILTIN, LOW); 
-  delay(10000);
-  setup();
+  delay_min(15);
+  //setup();
+  reinit();
 }
+
+void reinit(){
+  delay(20);
+  Serial.begin(9600);
+  xbee.setSerial(Serial);
+  termometroIR.begin();
+  hdc1080.begin(0x40);
+}
+
+void delay_min(unsigned int min){
+  while(min>0){
+    int sec=60;
+    while(sec>0){ 
+    delay(1000);
+    //LowPower.powerDown(SLEEP_1S, ADC_OFF, BOD_OFF);
+    sec--;
+    }
+    min--;
+  }
+}
+
+
+
 
 void printSerialNumber() {
 
