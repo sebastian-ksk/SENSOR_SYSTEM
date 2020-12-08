@@ -48,9 +48,13 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   digitalWrite(LED_BUILTIN, HIGH);   
-  delay(5000);
+
+  
+  delay(100);
   Temp_amb=hdc1080.readTemperature();
+  delay(100);
   HumR=hdc1080.readHumidity();
+  delay(100);
   Temp_dosel = termometroIR.readObjectTempC();
   Serial.print("T dosel =");
   Serial.println(Temp_dosel);
@@ -75,7 +79,8 @@ void loop() {
   envia(dataStringXbee);
   Serial.println("------------------------------------------------");
   digitalWrite(LED_BUILTIN, LOW); 
-  delay(5000);
+  delay(10000);
+  setup();
 }
 
 void printSerialNumber() {
