@@ -5,6 +5,8 @@
 #include <XBee.h>
 #include <SoftwareSerial.h>
 
+
+
 ClosedCube_HDC1080 hdc1080;
 Adafruit_MLX90614 termometroIR = Adafruit_MLX90614();
 XBee xbee = XBee();
@@ -35,15 +37,14 @@ void setup() {
   xbee.setSerial(Serial);
   termometroIR.begin();
   hdc1080.begin(0x40);
-  Serial.println("ClosedCube HDC1080 Arduino Test");
-  Serial.print("Manufacturer ID=0x");
-  Serial.println(hdc1080.readManufacturerId(), HEX); 
-  Serial.print("Device ID=0x");
-  Serial.println(hdc1080.readDeviceId(), HEX);
+  // Serial.println("ClosedCube HDC1080 Arduino Test");
+  // Serial.print("Manufacturer ID=0x");
+  // Serial.println(hdc1080.readManufacturerId(), HEX); 
+  // Serial.print("Device ID=0x");
+  // Serial.println(hdc1080.readDeviceId(), HEX);
   pinMode(LED_BUILTIN, OUTPUT);
-  printSerialNumber();
+  //printSerialNumber();
 }
-
 // the loop function runs over and over again forever
 void loop() {
   digitalWrite(LED_BUILTIN, HIGH);   
@@ -69,8 +70,8 @@ void loop() {
   AnVol2 = (ARead_A2*V_s) / 1023;
   AnVol3 = (ARead_A3*V_s) / 1023;
 
-  Serial.print("Analog sens: ");Serial.println(String(AnVol0)+","+String(AnVol1)+","+String(AnVol2)+","+String(AnVol3)); 
-  String dataStringXbee = String(ARead_A0)+","+String(ARead_A1)+","+String(ARead_A2)+","+String(ARead_A3)+","+ String(HumR)+","+ String(Temp_dosel)+","+String(Temp_amb)+","+"End"+"\n"; 
+  Serial.print("SENSORS:");Serial.println(String(AnVol0)+","+String(AnVol1)+","+String(AnVol2)+","+String(AnVol3)); 
+  String dataStringXbee ="SENSORS:"+String(ARead_A0)+";"+String(ARead_A1)+";"+String(ARead_A2)+";"+String(ARead_A3)+";"+ String(HumR)+";"+ String(Temp_dosel)+";"+String(Temp_amb)+";End"; 
   envia(dataStringXbee);
   Serial.println("------------------------------------------------");
   digitalWrite(LED_BUILTIN, LOW); 
@@ -78,6 +79,7 @@ void loop() {
 }
 
 void printSerialNumber() {
+
 Serial.print("Device Serial Number=");
 HDC1080_SerialNumber sernum = hdc1080.readSerialNumber();
 char format[12];
