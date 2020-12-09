@@ -108,9 +108,6 @@ void delay_min(unsigned int min){
   }
 }
 
-
-
-
 void printSerialNumber() {
 
 Serial.print("Device Serial Number=");
